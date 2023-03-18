@@ -3,16 +3,17 @@ import styled from 'styled-components';
 
 import Tooltip from 'shared/styles/tooltip';
 import Resource from 'shared/components/DraggableResourceIcon';
-import ExternalEventSvg from 'edaam/event/external-event.svg';
-import InternalEventSvg from 'edaam/event/internal-event.svg';
-import HandlerSvg from 'edaam/handler/handler.svg';
-import StorageSvg from 'edaam/storage/storage.svg';
+import types from 'edaam/types';
+import HandlerIcon from 'edaam/handler/HandlerIcon';
+import ExternalEventIcon from 'edaam/event/ExternalEventIcon';
+import InternalEventIcon from 'edaam/event/InternalEventIcon';
+import StorageIcon from 'edaam/storage/StorageIcon';
 
-const types = [
-  { type: 'external-event', title: 'External Event', Svg: ExternalEventSvg },
-  { type: 'handler', title: 'Handler', Svg: HandlerSvg },
-  { type: 'storage', title: 'Storage', Svg: StorageSvg },
-  { type: 'internal-event', title: 'Internal Event', Svg: InternalEventSvg },
+const resourceTypes = [
+  { type: types.ExternalEvent, title: 'External Event', Svg: ExternalEventIcon },
+  { type: types.InternalEvent, title: 'Internal Event', Svg: InternalEventIcon },
+  { type: types.Handler, title: 'Handler', Svg: HandlerIcon },
+  { type: types.Storage, title: 'Storage', Svg: StorageIcon }
 ];
 
 const Bar = styled.div`
@@ -54,7 +55,7 @@ const StyledResource = styled(Resource)`
 function UtilityBar() {
   return (
     <Bar>
-      {types.map(({ type, title, Svg }) => (
+      {resourceTypes.map(({ type, title, Svg }) => (
         <Container key={title}>
           <Tooltip title={title} position="right">
             <StyledResource type={type} Svg={Svg} />

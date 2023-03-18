@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ResourceView from 'shared/components/ResourceView';
 import { freeze } from 'shared/util/dom-events';
 
-import HandlerSvg from './handler.svg';
+import HandlerIcon from './HandlerIcon';233   
 import selectors from './selectors';
 import actions from './actions';
 

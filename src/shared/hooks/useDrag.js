@@ -46,6 +46,7 @@ function useDragSvg({ data, ref, onDragStart, onDragOver, onDragEnd }) {
   let clone = null;
   let pos = { x: 0, y: 0, screenX: 0, screenY: 0, offsetX: 0, offsetY: 0 };
   function svgDragStart(ev) {
+    console.log(ev);
     clone = ref.current.cloneNode(true);
     clone.id = 'ghost';
     clone.style.opacity = '0.5';

@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import EdaamEditor from 'edaam/EdaamEditor';
 
@@ -15,9 +17,11 @@ const BlueprintViewRoot = styled.div`
 
 export default function Blueprint() {
   return (
-    <BlueprintViewRoot>
-      <Toolbar />
-      <EdaamEditor />
-    </BlueprintViewRoot>
+    <DndProvider backend={HTML5Backend}>
+      <BlueprintViewRoot>
+        <Toolbar />
+        <EdaamEditor />
+      </BlueprintViewRoot>
+    </DndProvider>
   );
 }

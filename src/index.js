@@ -23,15 +23,18 @@ document.body.appendChild(root);
 
 const studioServicesBaseUrl = 'http://localhost:3030/api/v0/streams';
 
-render(
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <ServerSentEventListener baseUrl={studioServicesBaseUrl}>
-        <Header />
-        <Main />
-        <Footer />
-      </ServerSentEventListener>
-    </ThemeProvider>
-  </Provider>,
-  root
-);
+function App() {
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <ServerSentEventListener baseUrl={studioServicesBaseUrl}>
+          <Header />
+          <Main />
+          <Footer />
+        </ServerSentEventListener>
+      </ThemeProvider>
+    </Provider>
+  );
+}
+
+render(<App />, root);

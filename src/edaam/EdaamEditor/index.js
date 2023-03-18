@@ -2,9 +2,10 @@ import React, { useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withTheme } from 'styled-components';
 import usePlumbContainer from 'react-plumb';
+import { useDrop } from 'react-dnd';
 
-import useDrop from 'shared/hooks/useDrop';
 import { applyThemeToEndpoints } from 'shared/styles/endpoints';
+import types from 'edaam/types';
 import selectors from 'edaam/selectors';
 import HandlerResource from 'edaam/handler/HandlerResource';
 import handlerActions from 'edaam/handler/actions';
@@ -59,7 +60,7 @@ function BlueprintCanvas({ theme }) {
         if (handlers[conn.source.id]) {
           dispatch(referenceActions.select(conn.id));
         }
-      }),
+      })
     },
 
     onDragStop: useCallback((id, x, y) => {
@@ -81,35 +82,45 @@ function BlueprintCanvas({ theme }) {
     connections: Object.values({ ...triggers, ...references }),
 
     // Drag by 10 pixels
-    dragGrid: [10, 10],
+    dragGrid: [10, 10]
   });
 
-  useDrop({
-    ref,
-    svg: true,
-    onDrop: useCallback(
-      (pkg) => {
-        switch (pkg.data.type) {
+  const [, drop] = useDrop({
+    accept: Object.values(types),
+    drop: useCallback(
+      ({type}, monitor) => {
+        const options = monitor.getClientOffset();
+        switch (type) {
           case 'handler':
-            dispatch(handlerActions.create(pkg));
+            dispatch(handlerActions.create(options));
             break;
 
           case 'storage':
-            dispatch(storageActions.create(pkg));
+            dispatch(storageActions.create(options));
             break;
 
           case 'internal-event':
           case 'external-event':
-            dispatch(eventActions.create(pkg.data.type, pkg));
+            dispatch(eventActions.create(type, options));
             break;
         }
       },
       [dispatch]
-    ),
+    )
   });
 
+  // Merge the `ref` callback with our ref from `usePlumbContainer()`
+  //
+  const viewRefCallback = useCallback(
+    (element) => {
+      drop(element);
+      ref.current = element;
+    },
+    [ref, drop]
+  );
+
   return (
-    <EdaamEditorView ref={ref}>
+    <EdaamEditorView ref={viewRefCallback}>
       {plumb(
         Object.values(handlers).map((r) => <HandlerResource id={r._meta.id} resource={r} />),
         Object.values(storage).map((r) => <StorageResource id={r._meta.id} resource={r} />),
